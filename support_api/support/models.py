@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Issue(models.Model):
@@ -10,11 +11,11 @@ class Issue(models.Model):
         (FROZEN, "Frozen"),
         (RESOLVED, "Resolved"),
     ]
-    created_by = models.CharField(max_length=150, verbose_name="created by")
+    created_by = models.ForeignKey(User, verbose_name="created by", on_delete=models.CASCADE)
     status = models.CharField(choices=ISSUE_STATUSES, max_length=255, default=ACTIVE)
     title = models.CharField(max_length=150, verbose_name="title")
     body = models.TextField(verbose_name="Issue description")
-    assignee = models.CharField(max_length=150, verbose_name="assigned to")
+    assignee = models.ForeignKey(User, verbose_name="assigned to", on_delete=models.CASCADE)
     time_created = models.DateTimeField(auto_now_add=True, verbose_name="created")
     time_updated = models.DateTimeField(auto_now=True, verbose_name="last updated")
     updated_by = models.CharField(max_length=150, verbose_name="updated by")
@@ -23,7 +24,8 @@ class Issue(models.Model):
         return Issue.title
 
 
-class Comments:
+class Comments(models.Model):
+    issue = models.ForeignKey("Issue", on_delete=models.CASCADE)
     created_by = models.CharField(max_length=150, verbose_name="created by")
     time_created = models.DateTimeField(auto_now_add=True, verbose_name="created")
     updated_by = models.CharField(max_length=150, verbose_name="updated by")

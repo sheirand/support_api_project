@@ -1,3 +1,5 @@
 from django.contrib import admin
+from support.models import Issue, Comments
 
-# Register your models here.
+admin.site.register(Issue)
+admin.site.register(Comments)
