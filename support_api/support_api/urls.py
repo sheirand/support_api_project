@@ -15,7 +15,8 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-
+from support.views import IssueAPIView
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('api/v1/support/', IssueAPIView.as_view())
 ]
