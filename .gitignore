@@ -95,3 +95,4 @@ venv.bak/
 /.idea/inspectionProfiles/Project_Default.xml
 /.idea/support_api.iml
 /.idea/vcs.xml
+/support_api/support/migrations/
