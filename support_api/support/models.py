@@ -21,16 +21,19 @@ class Issue(models.Model):
     updated_by = models.CharField(max_length=150, verbose_name="updated by")
 
     def __str__(self):
-        return Issue.title
+        return self.title
 
 
 class Comments(models.Model):
-    issue = models.ForeignKey("Issue", on_delete=models.CASCADE)
+    issue = models.ForeignKey(Issue, on_delete=models.CASCADE)
     created_by = models.CharField(max_length=150, verbose_name="created by")
     time_created = models.DateTimeField(auto_now_add=True, verbose_name="created")
-    updated_by = models.CharField(max_length=150, verbose_name="updated by")
-    time_updated = models.DateTimeField(auto_now=True, verbose_name="last updated")
     body = models.TextField(verbose_name="comment")
 
+    class Meta:
+        verbose_name_plural = "Comments"
+
     def __str__(self):
-        return f"id: {self.pk} | {self.time_create.strftime('%d/%m/%y %H:%M')}"
+        return f"id: {self.pk} | {self.time_created.strftime('%d/%m/%y %H:%M')}"
+
+
