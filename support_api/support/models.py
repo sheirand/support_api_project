@@ -15,7 +15,7 @@ class Issue(models.Model):
     status = models.CharField(choices=ISSUE_STATUSES, max_length=255, default=ACTIVE)
     title = models.CharField(max_length=150, verbose_name="title")
     body = models.TextField(verbose_name="Issue description")
-    assignee = models.ForeignKey(User, verbose_name="assigned to", on_delete=models.CASCADE)
+    assignee = models.CharField(max_length=150, verbose_name="assigned to")
     time_created = models.DateTimeField(auto_now_add=True, verbose_name="created")
     time_updated = models.DateTimeField(auto_now=True, verbose_name="last updated")
     updated_by = models.CharField(max_length=150, verbose_name="updated by")
