@@ -88,3 +88,10 @@ venv/
 ENV/
 env.bak/
 venv.bak/
+/.idea/.gitignore
+/.idea/misc.xml
+/.idea/modules.xml
+/.idea/inspectionProfiles/profiles_settings.xml
+/.idea/inspectionProfiles/Project_Default.xml
+/.idea/support_api.iml
+/.idea/vcs.xml
