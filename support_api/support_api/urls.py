@@ -23,5 +23,6 @@ router.register('issue', CreateListRetrieveViewSet, basename='Issue')
 print(router.urls)
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('api/v1/', include(router.urls))
+    path('api/v1/', include(router.urls)),
+    path('', include('rest_framework.urls')),
 ]
