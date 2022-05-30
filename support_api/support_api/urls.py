@@ -15,12 +15,12 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from support.views import IssueAPIView
+from support.views import CreateListRetrieveViewSet
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
-router.register('issue', IssueAPIView)
-
+router.register('issue', CreateListRetrieveViewSet, basename='Issue')
+print(router.urls)
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include(router.urls))
