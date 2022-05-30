@@ -5,7 +5,7 @@ from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 
 from support.models import Issue, Comments
-from support.serializers import IssueSerializer, IssueStatusSerializer, CommentSerializer
+from support.serializers import IssueSerializer, IssueStatusSerializer
 from support.permissions import IsOwnerOrStaff, IsStaff
 
 
