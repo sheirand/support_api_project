@@ -5,11 +5,11 @@ from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
 
 from support.models import Issue, Comments
-from support.serializers import IssueSerializer, IssueStatusSerializer
+from support.serializers import IssueSerializer, IssueStatusSerializer, CommentSerializer
 from support.permissions import IsOwnerOrStaff, IsStaff
 
 
-class CreateListRetrieveViewSet(viewsets.ModelViewSet):
+class IssueViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         pk = self.kwargs.get("pk")
         if self.request.user.is_staff:
@@ -58,3 +58,16 @@ class CreateListRetrieveViewSet(viewsets.ModelViewSet):
     #     else:
     #         comments = Comments.objects.filter(issue_id=pk)
     #         return Response({'conversation': comments})
+
+
+class CommentsViewSet(viewsets.ModelViewSet):
+    serializer_class = CommentSerializer
+
+    def get_queryset(self):
+        issue_id = self.kwargs.get('issue_id')
+        if not issue_id:
+            return Comments.objects.none()
+        else:
+            return Comments.objects.filter(issue_id=issue_id)
+
+

@@ -23,3 +23,11 @@ class IssueStatusSerializer(serializers.ModelSerializer):
         model = Issue
         fields = ['assignee', 'status', "updated_by"]
 
+
+class CommentSerializer(serializers.ModelSerializer):
+    created_by = serializers.CharField(default=serializers.CurrentUserDefault(), read_only=True)
+    issue = serializers.CharField(read_only=True)
+
+    class Meta:
+        model = Comments
+        fields = "__all__"

@@ -15,14 +15,15 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from support.views import CreateListRetrieveViewSet
+from support.views import IssueViewSet, CommentsViewSet
 from rest_framework.routers import DefaultRouter
 
 router = DefaultRouter()
-router.register('issue', CreateListRetrieveViewSet, basename='Issue')
-print(router.urls)
+router.register('issue', IssueViewSet, basename='Issue')
+router.register('comment', CommentsViewSet, basename='comment')
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/v1/', include(router.urls)),
     path('', include('rest_framework.urls')),
+    path('api/v1/issue/<int:issue_id>/', include(router.urls)),
 ]

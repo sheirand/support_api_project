@@ -32,12 +32,13 @@ class Issue(models.Model):
 
 class Comments(models.Model):
     issue = models.ForeignKey(Issue, on_delete=models.CASCADE)
-    created_by = models.CharField(max_length=150, verbose_name="created by")
+    created_by = models.ForeignKey(User, verbose_name="created by", on_delete=models.PROTECT)
     time_created = models.DateTimeField(auto_now_add=True, verbose_name="created")
     body = models.TextField(verbose_name="comment")
 
     class Meta:
         verbose_name_plural = "Comments"
+        ordering = ['-time_created']
 
     def __str__(self):
         return f"id: {self.pk} | {self.time_created.strftime('%d/%m/%y %H:%M')}"
