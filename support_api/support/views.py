@@ -1,8 +1,9 @@
 from django.shortcuts import render
-from rest_framework import viewsets
+from rest_framework import viewsets, mixins
 from rest_framework.decorators import action
 from rest_framework.permissions import IsAdminUser, IsAuthenticated
 from rest_framework.response import Response
+from rest_framework.viewsets import GenericViewSet
 
 from support.models import Issue, Comments
 from support.serializers import IssueSerializer, IssueStatusSerializer, CommentSerializer
@@ -48,26 +49,24 @@ class IssueViewSet(viewsets.ModelViewSet):
             permission_classes = [IsAuthenticated]
         return [permission() for permission in permission_classes]
 
-    # @action(methods=['get', 'post'], detail=True, permission_classes=[IsOwnerOrStaff])
-    # def comments(self, request, pk=None):
-    #     if self.request.method == 'POST':
-    #         serializer = CommentSerializer(data=request.data)
-    #         serializer.is_valid(raise_exception=True)
-    #         serializer.save()
-    #         return Response({'comment': serializer.validated_data})
-    #     else:
-    #         comments = Comments.objects.filter(issue_id=pk)
-    #         return Response({'conversation': comments})
+    def perform_create(self, serializer):
+        serializer.save(created_by=self.request.user)
 
 
-class CommentsViewSet(viewsets.ModelViewSet):
+class CommentsViewSet(mixins.CreateModelMixin,
+                      mixins.RetrieveModelMixin,
+                      mixins.ListModelMixin,
+                      GenericViewSet):
+    permission_classes = [IsOwnerOrStaff]
     serializer_class = CommentSerializer
 
     def get_queryset(self):
         issue_id = self.kwargs.get('issue_id')
-        if not issue_id:
-            return Comments.objects.none()
-        else:
+        pk = self.kwargs.get('pk')
+        if not pk:
             return Comments.objects.filter(issue_id=issue_id)
+        else:
+            return Comments.objects.filter(issue_id=issue_id, pk=pk)
 
-
+    def perform_create(self, serializer):
+        serializer.save(created_by=self.request.user, issue_id=self.kwargs.get('issue_id'))

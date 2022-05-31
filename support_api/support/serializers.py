@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from rest_framework.relations import PrimaryKeyRelatedField
 
 from support.models import Issue, Comments
 from rest_framework import serializers
@@ -7,7 +8,7 @@ from rest_framework import serializers
 class IssueSerializer(serializers.ModelSerializer):
     assignee = serializers.CharField(read_only=True)
     status = serializers.CharField(read_only=True)
-    created_by = serializers.HiddenField(default=serializers.CurrentUserDefault())
+    created_by = serializers.CharField(read_only=True)
     updated_by = serializers.CharField(read_only=True)
 
     class Meta:
@@ -25,8 +26,8 @@ class IssueStatusSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
-    created_by = serializers.CharField(default=serializers.CurrentUserDefault(), read_only=True)
     issue = serializers.CharField(read_only=True)
+    created_by = serializers.CharField(read_only=True)
 
     class Meta:
         model = Comments
